@@ -98,29 +98,6 @@ struct ContentView: View {
     }
 }
 
-// Section Container
-struct SynthSection<Content: View>: View {
-    let title: String
-    let content: Content
-    
-    init(title: String, @ViewBuilder content: () -> Content) {
-        self.title = title
-        self.content = content()
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 30) {
-            HStack {
-                Text(title.uppercased())
-                    .font(.system(size: 11, weight: .medium, design: .default))
-                    .foregroundColor(Color(red: 0.3, green: 0.3, blue: 0.3))
-                    .tracking(2)
-                
-                Spacer()
-            }
-            
-            content
-        }
-        .padding(.vertical, 10)
-    }
+#Preview {
+    ContentView()
 }

@@ -31,38 +31,36 @@ struct SettingsView: View {
                         }
                         
                         // Volume Control
-                        SynthSection(title: "Master") {
-                            HStack {
-                                Spacer()
-                                LargeBraunKnob(
-                                    value: $synthEngine.masterVolume,
-                                    range: 0...1,
-                                    label: "Volume"
-                                )
-                                Spacer()
+                        HStack(spacing: 0){
+                            SynthSection(title: "Master") {
+                                    LargeBraunKnob(
+                                        value: $synthEngine.masterVolume,
+                                        range: 0...1,
+                                        label: "Volume"
+                                    )
                             }
-                        }
-                        
-                        // Filter & Effects Section
-                        SynthSection(title: "Filter & Effects") {
-                            HStack(spacing: 60) {
-                                LargeBraunKnob(
-                                    value: $synthEngine.filterFrequency,
-                                    range: 100...5000,
-                                    label: "Filter Freq"
-                                )
-                                
-                                LargeBraunKnob(
-                                    value: $synthEngine.filterResonance,
-                                    range: 0.1...2.0,
-                                    label: "Resonance"
-                                )
-                                
-                                LargeBraunKnob(
-                                    value: $synthEngine.reverbWetness,
-                                    range: 0...1,
-                                    label: "Reverb"
-                                )
+                            
+                            // Filter & Effects Section
+                            SynthSection(title: "Filter & Effects") {
+                                HStack(spacing: 30) {
+                                    LargeBraunKnob(
+                                        value: $synthEngine.filterFrequency,
+                                        range: 100...5000,
+                                        label: "Filter Freq"
+                                    )
+                                    
+                                    LargeBraunKnob(
+                                        value: $synthEngine.filterResonance,
+                                        range: 0.1...2.0,
+                                        label: "Resonance"
+                                    )
+                                    
+                                    LargeBraunKnob(
+                                        value: $synthEngine.reverbWetness,
+                                        range: 0...1,
+                                        label: "Reverb"
+                                    )
+                                }
                             }
                         }
                         
@@ -145,4 +143,35 @@ struct SettingsView: View {
         }
         .preferredColorScheme(.light)
     }
+}
+
+// Section Container
+struct SynthSection<Content: View>: View {
+    let title: String
+    let content: Content
+    
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 30) {
+            HStack {
+                Text(title.uppercased())
+                    .font(.system(size: 11, weight: .medium, design: .default))
+                    .foregroundColor(Color(red: 0.3, green: 0.3, blue: 0.3))
+                    .tracking(2)
+                
+                Spacer()
+            }
+            
+            content
+        }
+    }
+}
+
+
+#Preview {
+    SettingsView(synthEngine: .constant(SynthAudioEngine()))
 }

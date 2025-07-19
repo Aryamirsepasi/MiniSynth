@@ -6,7 +6,6 @@
 //
 
 import AVFoundation
-import Accelerate
 import Observation
 
 @Observable
@@ -38,6 +37,8 @@ class SynthAudioEngine {
     private var noteOnTime: Float = 0.0
     private var noteOffTime: Float = 0.0
     private var currentTime: Float = 0.0
+    private var hasPlayedOnce = false
+
     
     enum OscillatorType {
         case sine, square, sawtooth
@@ -48,12 +49,8 @@ class SynthAudioEngine {
     }
     
     private func setupAudioEngine() {
-        let format = AVAudioFormat(
-            standardFormatWithSampleRate: 44100,
-            channels: 2
-        )!
-        
-        sampleRate = Float(format.sampleRate)
+        let outputFormat = audioEngine.outputNode.outputFormat(forBus: 0)
+        sampleRate = Float(outputFormat.sampleRate)
         
         // Configure synthesis node with proper initializer
         synthNode = AVAudioSourceNode { [weak self] _, timeStamp, frameCount, audioBufferList in
@@ -83,10 +80,10 @@ class SynthAudioEngine {
         audioEngine.attach(reverbNode)
         audioEngine.attach(mixer)
         
-        audioEngine.connect(synthNode, to: filterNode, format: format)
-        audioEngine.connect(filterNode, to: reverbNode, format: format)
-        audioEngine.connect(reverbNode, to: mixer, format: format)
-        audioEngine.connect(mixer, to: audioEngine.outputNode, format: format)
+        audioEngine.connect(synthNode, to: filterNode, format: outputFormat)
+        audioEngine.connect(filterNode, to: reverbNode, format: outputFormat)
+        audioEngine.connect(reverbNode, to: mixer, format: outputFormat)
+        audioEngine.connect(mixer, to: audioEngine.outputNode, format: outputFormat)
         
         mixer.outputVolume = masterVolume
         
@@ -112,7 +109,10 @@ class SynthAudioEngine {
         frameCount: AVAudioFrameCount,
         audioBufferList: UnsafeMutablePointer<AudioBufferList>
     ) -> OSStatus {
-        let ablPointer = UnsafeMutableAudioBufferListPointer(audioBufferList)
+        let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
+        let buffers: [UnsafeMutableBufferPointer<Float>] = abl.map {
+          UnsafeMutableBufferPointer<Float>($0)
+        }
         
         for frame in 0..<Int(frameCount) {
             currentTime += 1.0 / sampleRate
@@ -124,11 +124,8 @@ class SynthAudioEngine {
             let sample = generateOscillator() * envelopeLevel * 0.3 // Reduce volume
             
             // Write to both channels
-            for buffer in ablPointer {
-                let buf: UnsafeMutableBufferPointer<Float> = UnsafeMutableBufferPointer(
-                    buffer
-                )
-                buf[frame] = sample
+            for buffer in buffers {
+                buffer[frame] = sample
             }
             
             // Update phase
@@ -167,21 +164,22 @@ class SynthAudioEngine {
                 // Sustain phase
                 envelopeLevel = sustain
             }
-        } else {
+        } else if hasPlayedOnce {
             // Release phase
             let timeSinceNoteOff = currentTime - noteOffTime
             if timeSinceNoteOff < release {
                 let releaseProgress = timeSinceNoteOff / release
                 envelopeLevel = sustain * (1.0 - releaseProgress)
-            } else {
+            }
+        } else {
                 envelopeLevel = 0.0
             }
-        }
         
         envelopeLevel = max(0.0, min(1.0, envelopeLevel))
     }
     
     func playNote(frequency: Float) {
+        hasPlayedOnce = true
         currentFrequency = frequency
         noteOnTime = currentTime
         isPlaying = true
