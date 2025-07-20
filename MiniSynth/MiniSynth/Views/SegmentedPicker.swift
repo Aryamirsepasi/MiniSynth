@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BraunSegmentedPicker<T: Hashable>: View {
+struct SegmentedPicker<T: Hashable>: View {
     @Binding var selection: T
     let options: [(T, String)]
     
@@ -46,7 +46,7 @@ struct BraunSegmentedPicker<T: Hashable>: View {
                                         cornerRadius: 6,
                                         style: .continuous
                                     )
-                                    .fill(Color(red: 1.0, green: 0.42, blue: 0.21)) // Braun orange
+                                    .fill(Color(red: 1.0, green: 0.42, blue: 0.21))
                                     .matchedGeometryEffect(
                                         id: "selection",
                                         in: selectionAnimation
@@ -89,7 +89,7 @@ struct BraunSegmentedPicker<T: Hashable>: View {
     }
 }
 
-extension BraunSegmentedPicker {
+extension SegmentedPicker {
     init(selection: Binding<T>, options: [T]) where T: CaseIterable & RawRepresentable, T.RawValue == String {
         self._selection = selection
         self.options = options.map { ($0, $0.rawValue) }

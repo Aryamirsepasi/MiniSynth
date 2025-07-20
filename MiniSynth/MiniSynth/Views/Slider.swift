@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BraunSlider: View {
+struct BSlider: View {
     @Binding var value: Float
     let range: ClosedRange<Float>
     let label: String

@@ -35,7 +35,7 @@ struct ContentView: View {
                         Spacer()
                         
                         // Custom Braun-style oscillator selector
-                        BraunSegmentedPicker(
+                        SegmentedPicker(
                             selection: $synthEngine.oscillatorType,
                             options: [
                                 (SynthAudioEngine.OscillatorType.sine, "SINE"),

@@ -18,7 +18,7 @@ struct SettingsView: View {
                         // Oscillator Type Section
                         SynthSection(title: "Oscillator") {
                             HStack {
-                                BraunSegmentedPicker(
+                                SegmentedPicker(
                                     selection: $synthEngine.oscillatorType,
                                     options: [
                                         (SynthAudioEngine.OscillatorType.sine, "SINE"),
@@ -33,7 +33,7 @@ struct SettingsView: View {
                         // Volume Control
                         HStack(spacing: 0){
                             SynthSection(title: "Master") {
-                                    LargeBraunKnob(
+                                    LargeKnob(
                                         value: $synthEngine.masterVolume,
                                         range: 0...1,
                                         label: "Volume"
@@ -43,19 +43,19 @@ struct SettingsView: View {
                             // Filter & Effects Section
                             SynthSection(title: "Filter & Effects") {
                                 HStack(spacing: 30) {
-                                    LargeBraunKnob(
+                                    LargeKnob(
                                         value: $synthEngine.filterFrequency,
                                         range: 100...5000,
                                         label: "Filter Freq"
                                     )
                                     
-                                    LargeBraunKnob(
+                                    LargeKnob(
                                         value: $synthEngine.filterResonance,
                                         range: 0.1...2.0,
                                         label: "Resonance"
                                     )
                                     
-                                    LargeBraunKnob(
+                                    LargeKnob(
                                         value: $synthEngine.reverbWetness,
                                         range: 0...1,
                                         label: "Reverb"
@@ -68,13 +68,13 @@ struct SettingsView: View {
                         SynthSection(title: "ADSR Envelope") {
                             VStack(spacing: 30) {
                                 HStack(spacing: 30) {
-                                    BraunSlider(
+                                    BSlider(
                                         value: $synthEngine.attack,
                                         range: 0.01...2.0,
                                         label: "Attack"
                                     )
                                     
-                                    BraunSlider(
+                                    BSlider(
                                         value: $synthEngine.decay,
                                         range: 0.01...2.0,
                                         label: "Decay"
@@ -82,13 +82,13 @@ struct SettingsView: View {
                                 }
                                 
                                 HStack(spacing: 30) {
-                                    BraunSlider(
+                                    BSlider(
                                         value: $synthEngine.sustain,
                                         range: 0...1,
                                         label: "Sustain"
                                     )
                                     
-                                    BraunSlider(
+                                    BSlider(
                                         value: $synthEngine.release,
                                         range: 0.01...3.0,
                                         label: "Release"

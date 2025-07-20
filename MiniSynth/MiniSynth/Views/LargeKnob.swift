@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LargeBraunKnob: View {
+struct LargeKnob: View {
     @Binding var value: Float
     let range: ClosedRange<Float>
     let label: String
