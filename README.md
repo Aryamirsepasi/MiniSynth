@@ -13,15 +13,15 @@ A real-time audio synthesizer built with SwiftUI and AVAudioEngine, showcasing p
 - **Zero-latency** audio processing using AVAudioEngine
 
 ### User Interface
-- **Dieter Rams-inspired design** with custom knobs and sliders
+- **Braun-inspired design** with custom knobs and sliders
 - **Interactive piano keyboard** with haptic feedback
 - **Real-time parameter control** with smooth audio updates
 - **Responsive SwiftUI** layout for all device sizes
 
 <p align="center">
+  <img src="images/main.png" alt="Home Page" width="300"/>
   <img src="images/settings1.png" alt="Synth Settings 1" width="300"/>
   <img src="images/settings2.png" alt="Synth Settings 2" width="300"/>
-  <img src="images/settings3.png" alt="Synth Settings 3" width="300"/>
 </p>
 
 ## Technical Implementation
