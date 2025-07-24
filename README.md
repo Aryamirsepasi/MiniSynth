@@ -19,9 +19,9 @@ A real-time audio synthesizer built with SwiftUI and AVAudioEngine, showcasing p
 - **Responsive SwiftUI** layout for all device sizes
 
 <p align="center">
-  <img src="images/main.png" alt="Home Page" width="300"/>
-  <img src="images/settings1.png" alt="Synth Settings 1" width="300"/>
-  <img src="images/settings2.png" alt="Synth Settings 2" width="300"/>
+  <img src="images/main.png" alt="Home Page"/>
+  <img src="images/settings1.png" alt="Synth Settings 1"/>
+  <img src="images/settings2.png" alt="Synth Settings 2"/>
 </p>
 
 ## Technical Implementation
